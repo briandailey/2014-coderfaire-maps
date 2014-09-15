@@ -51,6 +51,70 @@
         </section>
 
         <section>
+            <h2>What We Will and Will Not Talk About</h2>
+        </section>
+
+        <section>
+            <h3>What We'll Talk About</h3>
+            <h4>Geospatial data formats.</h4>
+            <aside class="notes">
+                This is important because if you're going to map data,
+                you need to know what the data might look like. You
+                might have to work with several different data formats.
+                Know your enemy.
+            </aside>
+        </section>
+
+        <section>
+            <h3>What We'll Talk About</h3>
+            <p>Tools for transforming geospatial data.</p>
+            <aside class="notes">
+                Most data formats are not suitable for presenting on the
+                web, so you'll want to know how to transform it into something
+                useful.
+            </aside>
+        </section>
+
+        <section>
+            <h3>What We'll Talk About</h3>
+            <p>Libraries to quickly view data.</p>
+            <aside class="notes">
+                When you're messing with geo data, it's really important
+                to be able to quickly see what you're dealing with (checking
+                periodically that you are not completely on the wrong trail).
+            </aside>
+        </section>
+
+        <section>
+            <h3>What We'll Talk About</h3>
+            <p>Libraries to present data.</p>
+            <aside class="notes">
+                Leaflet.js and d3 being the two giants here.
+                You want things to look nice and still be available on multiple platforms.
+            </aside>
+        </section>
+
+        <section>
+            <h3>What We <u>Won't</u> Talk About</h3>
+            <p>How tile servers work.</p>
+            <aside class="notes">
+                This used to be something you had to talk about, but now
+                with Mapbox it's not something you *have* to know about.
+            </aside>
+        </section>
+
+        <section>
+            <h3>What We <u>Won't</u> Talk About</h3>
+            <p>Geographic projections (see <a href="http://xkcd.com/977/">XKCD #977</a>)</p>
+            <div>
+            <img src="img/map_projections.png" alt="projections" />
+            </div>
+            <aside class="notes">
+                Because we're programmers, by golly, not cartographers.
+            </aside>
+        </section>
+
+        <section>
             <h3>Why Should You Care?</h3>
             <aside class="notes">
             First, why care?
@@ -58,6 +122,11 @@
             better and better tools with which to present it.
             Spatial data is best presented in map, not tabular.
             </aside>
+        </section>
+
+        <section>
+            <h2>It Has Gotten Better</h2>
+            <img src="img/map_complexity.png" alt="complexity" />
         </section>
 
         <section>
@@ -76,12 +145,724 @@
 
         <section>
         <h2>Interesting Maps Abound!</h2>
+        </section>
+
+        <section>
         <img src="img/trulia_affordability.png" alt="trulia">
+        <br/>
+        <a href="http://pyvideo.org/video/672/making-maps-with-python">Making Maps with Python (Trulia)</a>
         <aside class="notes">
         There are all kinds of companies doing interesting things with maps.
         Trulia can show you affordability, crime rates, and all kinds of other interesting things.
         In fact, there is a 3 hour Youtube video online by Zain Memom that explains how Trulia did this.
         </aside>
+        </section>
+
+        <section>
+        <img src="img/nashville_racial_overlay.png" alt="nashville racial mix">
+        <aside class="notes">
+            This image tells a story of racial segregation in Nashville almost the moment you see it.
+        </aside>
+        </section>
+
+        <section>
+        <img src="img/new_york_racial_mix.png" alt="nyc racial mix">
+        <aside class="notes">
+        This is NYC in comparison, with some racial divides but overall a much better mix.
+        </aside>
+        </section>
+
+        <section>
+            <h2>Geographic<br/>Data Formats</h2>
+        </section>
+
+        <section>
+            <h3>Shapefile</h3>
+            <pre style="width: 25%;">tl_2013_47_bg.dbf
+tl_2013_47_bg.prj
+tl_2013_47_bg.shp
+tl_2013_47_bg.shp.xml
+tl_2013_47_bg.shx
+tl_2013_47_bg.zip</pre>
+            <aside class="notes">
+            Shapefiles are more a project folder with a bunch of files
+            than a real format, but it is one of the oldest formats still
+            in use. It was introduced by Esri in early 1990s.
+            </aside>
+        </section>
+
+        <section>
+            <h4>An explanation may be in order...</h4>
+            <p style="text-align: left;">
+            <small>
+            .shp—The main file that stores the feature geometry (required).
+            <br/>
+            .shx—The index file that stores the index of the feature geometry (required).
+            <br/>
+            .dbf—The dBASE table that stores the attribute information of features (required).
+            <br/>
+            There is a one-to-one relationship between geometry and attributes, which is based on record number. Attribute records in the dBASE file must be in the same order as records in the main file.
+            <br/>
+            .sbn and .sbx—The files that store the spatial index of the features.
+            <br/>
+            .fbn and .fbx—The files that store the spatial index of the features for shapefiles that are read-only.
+            <br/>
+            .ain and .aih—The files that store the attribute index of the active fields in a table or a theme's attribute table.
+            <br/>
+            .atx—An .atx file is created for each shapefile or dBASE attribute index created in ArcCatalog. ArcView 3.x attribute indexes for shapefiles and dBASE files are not used by ArcGIS. A new attribute indexing model has been developed for shapefiles and dBASE files.
+            <br/>
+            .ixs—Geocoding index for read/write shapefiles.
+            <br/>
+            .mxs—Geocoding index for read/write shapefiles (ODB format).
+            <br/>
+            .prj—The file that stores the coordinate system information (used by ArcGIS).
+            <br/>
+            .xml—Metadata for ArcGIS—Stores information about the shapefile.
+            <br/>
+            .cpg—An optional file that can be used to specify the code page for identifying the character set to be used.
+            </small>
+            </p>
+            (<a href="http://webhelp.esri.com/arcgisdesktop/9.3/index.cfm?TopicName=Shapefile_file_extensions">Source</a>)
+        </section>
+
+        <section data-background="img/unsure_baby.gif">
+            <aside class="notes">
+                Listen, I know what you're thinking. That looks like a mess. Well, it is.
+                It's great for ESRI and ArcGIS, but it's not really web-friendly.
+            </aside>
+        </section>
+
+        <section>
+            <h3>KML</h3>
+            <p>"Keyhole Markup Language"</p>
+            <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;kml xmlns="http://www.opengis.net/kml/2.2"&gt;
+&lt;Document&gt;
+&lt;Placemark&gt;
+  &lt;name&gt;New York City&lt;/name&gt;
+  &lt;description&gt;New York City&lt;/description&gt;
+  &lt;Point&gt;
+    &lt;coordinates&gt;-74.006393,40.714172,0&lt;/coordinates&gt;
+  &lt;/Point&gt;
+&lt;/Placemark&gt;
+&lt;/Document&gt;
+&lt;/kml&gt;
+</code></pre>
+        </section>
+
+        <section>
+            <p>"..XML notation for expressing geographic annotation and visualization..."</p>
+        </section>
+
+        <section>
+            <h2>A zillion other<br/>formats...</h2>
+            <h3>(Many of them proprietary.)</h3>
+            <h4>(Most of them XML extensions.)</h4>
+            <aside class="notes">
+                GPX (used by Garmin), GML standard developed by OpenGeoSpatial...
+                Both of which are XML based. In fact, most of them are XML-based.
+            </aside>
+        </section>
+
+        <section data-background="img/kml.gif" alt="kml">
+            <aside class="notes">
+                I know, right? XML! What is, this, 2004? Are we going to start delivering maps with SOAP and WSDLs?
+                No! There's hope!
+            </aside>
+        </section>
+
+        <section data-background="img/relief.gif" alt="relief">
+            <aside class="notes">That's right. Let the relief wash over you.</aside>
+        </section>
+
+        <section>
+            <h3>GeoJSON</h3>
+            <pre><code>{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [125.6, 10.1]
+  },
+  "properties": {
+    "name": "Dinagat Islands"
+  }
+}
+</code></pre>
+            <aside class="notes">
+                We all know and love (maybe hate?) JSON.
+                It's certainly more lightweight than XML extensions.
+                This is currently the most popular way to express geographic data on the web.
+                Could change tomorrow.
+            </aside>
+        </section>
+
+        <section>
+            <h4>New Hotness</h4>
+            <h2>TopoJSON</h2>
+            <blockquote style="font-size: 75%;">
+                    "TopoJSON eliminates redundancy, allowing related geometries to be stored efficiently in the same file."
+            </blockquote>
+            <a href="https://github.com/mbostock/topojson">https://github.com/mbostock/topojson</a>
+            <aside class="notes">This is an interesting GeoJSON extension that ultimately deals with the problem of large file sizes. However, it is quite new and not supported everywhere.</aside>
+        </section>
+
+        <section>
+            <h2>Databases</h2>
+            <p>Just go with PostgreSQL/PostGIS.</p>
+            <aside class="notes">Different databases have varying levels of support.
+            The current gold standard, however, is PostGIS, a PostgreSQL extension that add geometry types to your tables.
+            SQLAlchemy has some support, MySQL's is very limited. PostGIS is where it's at. Easy to set up. It's even included
+            in Postgres.app for Mac OS X.
+            </aside>
+        </section>
+
+        <section>
+            Geometry Types
+            <aside class="notes">
+            So what did I just mean by "geometry types"?
+            Didn't I just talk about formats? Well, this is a little more specific.
+            </aside>
+        </section>
+
+        <section>
+            <blockquote style="font-size: 60%; text-align: left;">
+                Point - a single position.
+                <br/>
+                MultiPoint - an array of positions.
+                <br/>
+                LineString - an array of positions forming a continuous line.
+                <br/>
+                MultiLineString - an array of arrays of positions forming several lines.
+                <br/>
+                Polygon - an array of arrays of positions forming a polygon (possibly with holes).
+                <br/>
+                MultiPolygon - a multidimensional array of positions forming multiple polygons.
+                <br/>
+                GeometryCollection - an array of geometry objects.
+                <br/>
+                Feature - a feature containing one of the above geometry objects.
+                <br/>
+                FeatureCollection - an array of feature objects.
+                <br/>
+            (<a href="https://github.com/mbostock/d3/wiki/Geo-Paths#_path">Source</a>)
+            </blockquote>
+            <aside class="notes">
+            This vocabulary is good to know because it's fairly consistent across most data formats.
+            </aside>
+        </section>
+
+        <section>
+            <h1>GDAL</h1>
+            <h3>A tool you should use</h3>
+            <aside class="notes">
+            If you plan to do much with geo data, this is a library you should prob. have.
+            Geospatial Data Abstraction Library.
+            Includes all kinds of utilities to make your life easier.
+            (brew install gdal. just not NOW, fools!)
+            </aside>
+         </section>
+
+        <section>
+            <h1>Project time!</h1>
+            <p>Let's build some maps!</p>
+        </section>
+
+        <section>
+            <h3>The Data - Building Permits</h3>
+            <img src="img/building_permits.png" alt="permits">
+            <aside class="notes">
+                Nashville has pushed a lot of data to data.nashville.gov,
+                this is a data set that (like many others) has long/lat appended
+                to the addresses.
+            </aside>
+        </section>
+
+        <section>
+            <h2>The Question</h2>
+            <p>Which parts of Nashville have filed the most housing permits?</p>
+        </section>
+
+        <section>
+            <h1>The Method</h1>
+            <p>Look at permits per blockgroup.</p>
+            <aside class="notes">
+            Blockgroups are a geography provided by the US Census that
+            breaks up a population into (generally speaking) equitable chunks.
+            Usually between 600 and 3000 people.
+            </aside>
+        </section>
+
+        <section>
+            <h3>First Step</h3>
+            <p>Where can we get block groups?</p>
+        </section>
+
+        <section>
+            <h1>US Census</h1>
+            <h3><a href="https://www.census.gov/geo/maps-data/data/tiger-line.html">TIGER/Line Shapefiles and TIGER/Line Files</a></h3>
+            <aside class="notes">
+            The US Census Bureau provides shapefiles of all levels of geography.
+            </aside>
+        </section>
+
+        <section>
+            <img src="img/blockgroup_availability.png" alt="availability">
+            <aside class="notes">
+                Unfortunately, if you go to the site, you'll note that block groups
+                are only available on the state level.
+            </aside>
+        </section>
+
+        <section>
+            <img src="img/tigerline_blockgroups.png" alt="ftp">
+            <aside class="notes">
+                Furthermore, they are in cryptically named zip files in an FTP directory.
+                The numbers are FIPS (Federal Information Processing Standards) codes.
+            </aside>
+        </section>
+
+        <section data-background="img/horse.gif">
+        <aside class="notes">Thanks, bureaucracy, for adding needless layers of complexity!</aside>
+        </section>
+
+        <section data-background="img/scary_bin.gif">
+        <aside class="notes">If you take one look at that directory and run away, I wouldn't blame you. But FIPS codes
+        start to make a little more sense when you get familiar with them. They apply to counties, blockgroups, etc.</aside>
+        </section>
+
+        <section>
+            <h3>TN = 47</h3>
+            <aside class="notes">Already done the work for you, TN is FIPS 47. </aside>
+        </section>
+
+
+        <section>
+        <p>Let's grab that file. (Just not <u>now</u>. Be kind to the WiFi, yo.)</p>
+        <pre><code>wget ftp://ftp2.census.gov/geo/tiger/TIGER2013/BG/tl_2013_47_bg.zip</code></pre>
+        </section>
+
+        <section>
+        <p>Unzipped; yep, looks like a shapefile.</p>
+        <pre><code>$ unzip tl_2013_47_bg.zip
+$ ll
+-rwxrwxr-x  1 brian  staff   383K Aug  2  2013 tl_2013_47_bg.dbf
+-rwxrwxr-x  1 brian  staff   165B Aug  2  2013 tl_2013_47_bg.prj
+-rwxrwxr-x  1 brian  staff    36M Aug  2  2013 tl_2013_47_bg.shp
+-rwxrwxr-x  1 brian  staff    19K Aug  2  2013 tl_2013_47_bg.shp.xml
+-rwxrwxr-x  1 brian  staff    32K Aug  2  2013 tl_2013_47_bg.shx
+</code></pre>
+        <aside class="notes">Note the 32MB XML file.</aside>
+        </section>
+
+        <section>
+            <p>Convert this thing to GeoJSON!</p>
+            <pre><code>$ ogr2ogr -t_srs "EPSG:4326" -f "GeoJSON" tennessee.geojson tl_2013_47_bg.shp</code></pre>
+            <aside class="notes">
+            ogr2ogr is part of the GDAL package. It's like the utility knife for Geographic data.
+            I know this looks gnarly, so let's brake it down.
+            </aside>
+        </section>
+
+        <section>
+            <pre><code>-t_srs "EPSG:4326"</code></pre>
+            <p><a href="http://www.bostongis.com/?content_name=srid#82">http://www.bostongis.com/?content_name=srid#82</a></p>
+            <aside class="notes">Reproject/transform to this SRS on output. SRS is  Spatial Reference System Identifier.
+            There are a lot of different ways to project maps, and this particular system is one of the more common, US-Centric ones.
+            We won't spend much time on this, it's an abyss. Choice of projection will be based on where and how large the map will be.
+            </aside>
+        </section>
+
+        <section>
+            <pre><code>-f "GeoJSON" tennessee.geojson tl_2013_47_bg.shp</code></pre>
+            <aside class="notes">Basically, direct output to a file in the GeoJSON format.
+            Source is a shapefile, which is the default. Note we pointed to .shp but other files ARE required.</aside>
+        </section>
+
+        <section>
+            <h3>Guesses as to file size?</h3>
+            <aside class="notes">Do you think the GeoJSON will be larger or smaller than the shapefile?</aside>
+        </section>
+
+        <section>
+            <pre><code>$ ls -l
+-rw-r--r--  1 brian  staff    62M Sep  4 20:28 tennessee.geojson</code></pre>
+        </section>
+
+        <section data-background="img/horrified.gif">
+            <aside class="notes">Well, at least it's not XML. Right? ... right?</aside>
+        </section>
+
+        <section>
+            <pre><code>
+iPython 3.4.0 (default, Apr 15 2014, 20:38:59)
+[GCC 4.2.1 Compatible Apple LLVM 5.1 (clang-503.0.38)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+&gt;&gt;&gt; import json
+&gt;&gt;&gt; f = open('tennessee.geojson')
+&gt;&gt;&gt; j = json.loads(f.read())
+</code></pre>
+            <aside class="notes">Since GEOJSON is a subset of JSON, we can just use our
+            favorite programming language to trim this data down to the parts we want - namely,
+            Davidson County.</aside>
+       </section>
+
+       <section>
+       <pre><code>&gt;&gt;&gt; j.keys()
+dict_keys(['features', 'type', 'crs'])
+&gt;&gt;&gt; j['type']
+&gt;&gt;&gt; 'FeatureCollection'
+&gt;&gt;&gt; len(j['features'])
+4125
+        </code></pre>
+            <aside class="notes">
+                In this generated file, we have a feature collection.
+                There are over 4000 features (in this case, block groups).
+            </aside>
+        </section>
+
+        <section><pre style="font-size: 50%;"><code># note that the properties value stores
+# useful information like county FIPS (COUNTYFP)
+&gt;&gt;&gt; j['features'][0]['properties']
+{'NAMELSAD': 'Block Group 3', 'BLKGRPCE': '3', 'STATEFP': '47',
+'INTPTLAT': '+36.0563099', 'INTPTLON': '-083.8449238', 'COUNTYFP': '093',
+'AWATER': 0.0, 'TRACTCE': '005201', 'GEOID': '470930052013',
+'MTFCC': 'G5030', 'ALAND': 14162071.0, 'FUNCSTAT': 'S'} </code></pre>
+        </section>
+
+        <section><pre style="font-size: 50%;"><code>&gt;&gt;&gt; # Davidson County is 037.
+# number of davidson co block groups
+&gt;&gt;&gt; len([feature for feature in j['features'] \
+    if feature['properties']['COUNTYFP'] == '037'])
+473
+&gt;&gt;&gt; davidson_county_blocks = [feature for feature in j['features'] \
+    if feature['properties']['COUNTYFP'] == '037']
+&gt;&gt;&gt; j['features'] = davidson_county_blocks
+&gt;&gt;&gt; dc = open('davidson_county_blocks.geojson', 'w')
+&gt;&gt;&gt; dc.write(json.dumps(j))
+2259120
+&gt;&gt;&gt; dc.close()
+</code></pre>
+        </section>
+
+        <section>
+            <pre>-rw-r--r--  1 brian  staff   2.2M Sep  4 20:59 davidson_county_blocks.geojson</pre>
+        <aside class="notes">So it's still 2.2 MB. Now we could do things like smooth out the lines,
+        in each multipolygon, but that is beyond the scope of this talk. It makes your maps
+        more jagged.</aside>
+        </section>
+
+        <section>
+            <h2>Great!</h2>
+            <h3>Now how do I see this thing?</h3>
+        </section>
+
+        <section>
+            <h3>Folium</h3>
+            <img src="img/folium.jpg" alt="folium" />
+            <p><a href="https://github.com/wrobstory/folium">https://github.com/wrobstory/folium</a></p>
+            <p>"Python Data. Leaflet.js Maps."</p>
+            <aside class="notes">
+                If you're a Python guy, instead of a JS guy, this is an easy way to generate a map.
+            </aside>
+        </section>
+
+        <section>
+        <pre><code>
+import folium
+
+geo_path = r'data/davidson_county_blocks.geojson'
+
+bna = folium.Map(location=[36.1881350, -86.7207050],
+                           tiles='Mapbox Bright', zoom_start=10)
+bna.geo_json(geo_path=geo_path)
+bna.create_map(path='bna.html')
+</code></pre>
+        <aside class="notes">The location is the long/lat for Nashville (near where I live).</aside>
+        </section>
+
+        <section>
+            <img src="img/davidson_county_blockgroups.png" alt="davidson co">
+            <aside class="notes">
+                Woohoo! Now this just shows us what the block groups look like.
+                We still want to color them based on the number of permits.
+            </aside>
+        </section>
+
+        <section>
+            <p>Need to find out number of permits per blockgroup.</p>
+            <aside class="notes">
+                To do this, we need a way to figure out the point for each permit,
+                and calculate which blockgroup multipolygon it falls within.
+                Thankfully, the data has longitude/latitude appended to the address,
+                so we don't have to get into geocoding (that's a whole 'nother talk).
+            </aside>
+        </section>
+
+        <section>
+            <pre><code>for each blockgroup
+    count number of points in block group</code></pre>
+            <aside class="notes">Ultimately, what we want to do is loop over the block groups and count the number of permits that lie within that block group.</aside>
+        </section>
+
+        <section>
+            <h3>PostgreSQL/PostGIS, Here We Come!</h3>
+        </section>
+
+        <section>
+            <p>Using Postgress.App on Mac OS X</p>
+        </section>
+
+        <section>
+        <pre><code>$ psql -h localhost
+psql (9.3.5)
+Type "help" for help.
+
+brian=# create database buildings;
+CREATE DATABASE
+brian=# \c buildings
+You are now connected to database "buildings" as user "brian".
+buildings=# create extension postgis;
+CREATE EXTENSION
+buildings=# \q
+</code></pre>
+            <aside class="notes">
+                Now that wasn't too hard, was it? PostGIS is not enabled by default.
+                It used to be a lot harder to turn PostGIS on, but it's quite easy these days.
+            </aside>
+        </section>
+
+        <section>
+            <pre>$ shp2pgsql -s 4326 tl_2013_47_bg blockgroups | psql -d buildings
+$ psql -d buildings
+buildings=# select count(*) from blockgroups;
+count
+-------
+4125
+(1 row)
+</pre>
+            <aside class="notes"><small>
+            This command line tool is included with PostGIS.
+            It takes the shapefile and loads all of them into the blockgroups table, which
+            is geospatially enabled. The -s transformed it to a very commonly used projection,
+            you'll be seeing more of that later.  </small>
+            </aside>
+        </section>
+
+        <section>
+            <p>That wasn't too bad.</p>
+            <aside class="notes">Loading up Shapefiles into PostGIS is pretty easy.</aside>
+        </section>
+
+        <section>
+            <p>Unfortunately, the government data is a bit messier.</p>
+        </section>
+
+        <section>
+<pre style="font-size: 50%;"><code>CREATE TABLE building_permits (
+    permit INTEGER,
+    permit_type_description VARCHAR(40),
+    parcel VARCHAR(18),
+    date_entered DATE,
+    date_issued DATE,
+    const_cost VARCHAR(12),
+    subdivisionlot VARCHAR(100),
+    contact VARCHAR(60),
+    per_ty VARCHAR(4),
+    ivr_trk INTEGER,
+    purpose TEXT,
+    address VARCHAR(31),
+    city VARCHAR(14),
+    state VARCHAR(2),
+    zip INTEGER,
+    mapped_location VARCHAR(92),
+    longlat  geometry(Point, 4326)
+);</code></pre>
+            <aside class="notes">Had to eyeball the file to create a decent SQL table container.</aside>
+        </section>
+
+        <section>
+            <h3>Load that crazy CSV file...</h3>
+<pre>
+buildings=# \copy building_permits (permit, permit_type_description, [...]
+    zip, mapped_location) from 'building_permits_20140828.csv' with csv header;
+buildings=# select count(*) from building_permits;
+ count
+-------
+ 14678
+(1 row)
+</pre>
+        </section>
+
+        <section>
+            <p>Note that longlat is still NULL.</p>
+            <aside class="notes">The longlat was embedded in the address. Bureaucrats, right? What're ya gonna do.</aside>
+        </section>
+
+        <section>
+            <p>Those that have sensitive stomachs may want to look away.</p>
+        </section>
+
+        <section>
+            <pre>
+update building_permits set pt =  st_pointfromtext('point(' ||
+    replace(substring(mapped_location from '[\-0-9\.]+\)'), ')', '') ||
+    ' ' || 
+    substring(mapped_location from '[0-9]{2}\.[0-9]{10}') || ')', 4326);
+            </pre>
+            <p>Basically, longlat = POINT(X, Y, SRID)</p>
+            <aside class="notes">Yes, I threw regex at it. Now I have... more problems.</aside>
+        </section>
+
+        <section data-background="img/home_alone.gif"></section>
+
+        <section>
+            <p>Again, the 4326 is the same SRID you saw for the ogr2ogr tool earlier.</p>
+        </section>
+
+        <section>
+<pre>
+buildings=# select geoid, count(1) as total_permits from blockgroups bg,
+    building_permits bp where st_contains(bg.geom, bp.longlat)
+    group by geoid order by total_permits desc limit 5;
+    geoid     | total_permits
+--------------+---------------
+ 470370156232 |           272
+ 470370195002 |           267
+ 470370191141 |           266
+ 470370121001 |           260
+ 470370195001 |           252
+(5 rows)</pre>
+            <aside class="notes">This tells us that some blockgroups have a lot of permits, but not much else.</aside>
+        </section>
+
+        <section>
+            <h3>Let's map it with Folium again...</h3>
+            <aside class="notes">Folium allows you to build choropleth maps very easily by combining a CSV file and a GeoJSON file.</aside>
+        </section>
+
+        <section>
+            <h3>Create CSV</h3>
+<pre><code>#buildings=# \copy (select...) to 'data/total_permits_by_geo.csv' with csv;</code></pre>
+        </section>
+
+
+        <section>
+<pre><code>import folium
+import pandas as pd
+
+geo_path = r'davidson_county_blocks.geojson'
+building_permits = pd.read_csv(r'total_permits_by_geo.csv')
+
+bna = folium.Map(location=[36.1881350, -86.7207050],
+    tiles="Mapbox Bright", zoom_start=10, width=640)
+
+bna.geo_json(geo_path=geo_path,
+    data=building_permits,
+    columns=['GEOID', 'Permits'],
+    key_on='feature.properties.GEOID',
+    threshold_scale=[25, 50, 100, 150, 200],
+    fill_color='YlGn', fill_opacity=0.7, line_opacity=0.2,
+    legend_name='Building Permits')
+bna.create_map(path='bna.html')
+</code></pre>
+        </section>
+
+        <section><img src="img/davidson_county_choropleth.png" alt="choropleth" />
+            <aside class="notes">
+                Note that the black pages lack any data at all. Lots of contruction
+                in interesting places, but as this map is not clickable (beyond zoom,
+                drag, etc) it's hard to tell how many permits are in each blockgroup.
+            </aside>
+        </section>
+
+        <section>
+            <p>Time to step away from the folium and go raw Leaflet.js...</p>
+            <img src="img/leaflet_example_choropleth.png" alt="Example">
+            <aside class="notes">
+            Let's say that we wanted to see additional information
+            when hovering over each blockgroup. Leaflet has a great
+            example on their website.</aside>
+        </section>
+
+        <section>
+            <h3>A Simple Map</h3>
+<pre><code>
+&lt;!DOCTYPE html&gt;
+&lt;head&gt;
+   &lt;link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" /&gt;
+   &lt;script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+        &lt;div id="map" style="width: 960px; height: 500px"&gt;&lt;/div&gt;
+&lt;script&gt;
+var map = L.map('map').setView([37.8, -96], 4);
+
+L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.jpg', {
+    maxZoom: 18
+}).addTo(map);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+        </section>
+        <section><img src="img/leaflet_simple_example.png" alt="simple example" /></section>
+
+        <section>
+            <p>We need to pull in our GeoJSON, can use queue and d3...</p>
+<pre><code>queue()
+      .defer(d3.json, 'data/building_permits.geojson')
+      .await(makeMap);
+
+function makeMap(error, geoJSON) { }
+</code></pre>
+        <p><a href="http://giscollective.org/d3-queue-js/">http://giscollective.org/d3-queue-js/</a></p>
+        </section>
+
+        <section>
+        <pre><code>var map = L.map('map').setView([36.188135, -86.720705], 10);
+
+davidsonCo = L.geoJson(geoJSON).addTo(map)</code></pre>
+        </section>
+        <section><img src="img/davidson_co_blocks_leaflet.png" alt="simple" /></section>
+
+        <section><pre><code>davidsonCo = L.geoJson(geoJSON,
+    {style: style, onEachFeature: onEachFeature }</b>).addTo(map)</code></pre>
+        <aside class="notes">just by adding some additional configuration options we can create methods that add stylistic touches and popups.</aside></section>
+
+        <section>
+            <h3>The Choropleth</h3>
+<pre><code>function style(feature) {
+    return { fillColor: getColor(feature.properties.building_permits), opacity: 1, color: 'black', fillOpacity: 0.9, weight: 0 };
+}
+
+function getColor(d) {
+    return d &gt; 250  ? '#800026' :
+           d &gt; 200  ? '#BD0026' :
+           d &gt; 150  ? '#E31A1C' :
+           d &gt; 100  ? '#FC4E2A' :
+           d &gt; 50   ? '#FD8D3C' :
+           d &gt; 20   ? '#FEB24C' :
+           d &gt; 10   ? '#FED976' :
+                      '#FFEDA0';
+    }
+}</code></pre>
+            <aside class="notes">
+                Note that I'm keying off the building prop data in each feature properties.
+                Simply added this by munging about the JSON in Python.</aside>
+        </section>
+        <section><img src="img/davidson_co_leaflet_choropleth.png" alt="choropleth" /></section>
+        <section>
+            <h3>The Pop-up</h3>
+<pre><code>function onEachFeature(feature, layer) {
+    if (feature.properties &amp;&amp; feature.properties.GEOID &amp;&amp; feature.properties.building_permits) {
+        layer.bindPopup(feature.properties.GEOID + " has " + feature.properties.building_permits + " building permits.");
+    }
+}</code></pre>
+        </section>
+        <section><img src="img/davidson_co_leaflet_popup.png" alt="popup" /></section>
+
+        <section>
+            # show geojson to d3 without a tilemap?
         </section>
 
       </div>
@@ -101,8 +882,8 @@
         history: true,
         center: true,
 
-        theme: 'moon', // available themes are in /css/theme
-        transition: Reveal.getQueryHash().transition || 'concave', // default/cube/page/concave/zoom/linear/fade/none
+        theme: 'blood', // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
 
         // Parallax scrolling
         // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
