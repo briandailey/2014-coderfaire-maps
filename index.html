@@ -297,6 +297,29 @@ tl_2013_47_bg.zip</pre>
         </section>
 
         <section>
+            <h3>GeoJSON</h3>
+            <pre><code>{
+  "type": "FeatureCollection",
+  "features": {
+      "type": "Feature",
+      "geometry": {
+        "type": "Multipolygon",
+        "coordinates": [125.6, ( .... snip .... ) 10.1]
+      },
+      "properties": {
+        "name": "Dinagat Islands"
+      }
+    }
+    ...
+}
+</code></pre>
+            <aside class="notes"><small>
+                This is more often what you'll see - a collection of features. Note the "coordinates"... this long list of numbers represents the blood, sweat and tears of generations of cartographers.
+                I still view it with awe. The properties array allows all manners of freedom, which we can demonstrate later.</small>
+            </aside>
+        </section>
+
+        <section>
             <h4>New Hotness</h4>
             <h2>TopoJSON</h2>
             <blockquote style="font-size: 75%;">
@@ -348,6 +371,7 @@ tl_2013_47_bg.zip</pre>
             </blockquote>
             <aside class="notes">
             This vocabulary is good to know because it's fairly consistent across most data formats.
+            Multipolygon is the big one here.
             </aside>
         </section>
 
@@ -457,6 +481,15 @@ $ ll
         <section>
             <p>Convert this thing to GeoJSON!</p>
             <pre><code>$ ogr2ogr -t_srs "EPSG:4326" -f "GeoJSON" tennessee.geojson tl_2013_47_bg.shp</code></pre>
+        </section>
+
+        <section data-background="img/shrek.jpg">
+            <h1>Wait, what?</h1>
+        </section>
+
+        <section>
+            <h3>ogr2ogr</h3>
+            <p>converts simple features data between file formats</p>
             <aside class="notes">
             ogr2ogr is part of the GDAL package. It's like the utility knife for Geographic data.
             I know this looks gnarly, so let's brake it down.
@@ -464,7 +497,7 @@ $ ll
         </section>
 
         <section>
-            <pre><code>-t_srs "EPSG:4326"</code></pre>
+            <pre><code>ogr2ogr -t_srs "EPSG:4326"</code></pre>
             <p><a href="http://www.bostongis.com/?content_name=srid#82">http://www.bostongis.com/?content_name=srid#82</a></p>
             <aside class="notes">Reproject/transform to this SRS on output. SRS is  Spatial Reference System Identifier.
             There are a lot of different ways to project maps, and this particular system is one of the more common, US-Centric ones.
@@ -862,7 +895,116 @@ function getColor(d) {
         <section><img src="img/davidson_co_leaflet_popup.png" alt="popup" /></section>
 
         <section>
-            # show geojson to d3 without a tilemap?
+            <h3>We can also dispense with the tiles.</h3>
+            <aside class="notes">
+            So far, we've been showing this map with Leaflet.
+            That's great, but sometimes you want to show a simple map
+            with no tile set, like this one.
+            </aside>
+        </section>
+
+        <section>
+            <p>d3.geo</p>
+            <p><a href="https://github.com/mbostock/d3/wiki/Geo">github.com/mbostock/d3/wiki/Geo</a></p>
+            <aside class="notes">d3 makes this really easy. It simply draws geographic features as SVG or Canvas.
+                Note that I don't have a whole lot of expertise here, so if you already know how to do this
+                feel free to point your finger at me and laugh.
+                Let's walk through creating this map with d3.</aside>
+        </section>
+
+        <section>
+<pre><code>var width  = 500;
+var height = 500;
+
+var vis = d3.select("#vis").append("svg")
+    .attr("width", width).attr("height", height) 
+</code></pre>
+            <aside class="notes">We created a div with the id of "vis", and created an svg container inside it matching our specified height.</aside>
+        </section>
+
+        <section>
+<pre><code>d3.json("data/building_permits.geojson", function(json) {
+...
+});
+</code></pre>
+            <aside class="notes">Rather than embedding a geojson document inside our HTML, we'll load it with d3.</aside>
+        </section>
+
+        <section>
+<pre><code>
+var center = d3.geo.centroid(json)
+var scale  = 50000;
+var offset = [width/2, height/2];
+var projection = d3.geo.mercator().scale(scale).center(center)
+    .translate(offset);
+</code></pre>
+            <p>Helpful tips: <a href="http://www.maori.geek.nz/post/d3_js_geo_fun">www.maori.geek.nz/post/d3_js_geo_fun</a></p>
+            <aside class="notes">We'll center the map on our geojson collection (saves much headache!). You can get more clever about setting scale, but that's beyond the scope here.
+            The projection is set using mercator (which we won't get into, but default is albersUSA), centered on the multipolygon centroid (what's that)
+            translate offset "determines the pixel coordinates of the projection’s center." </aside>
+        </section>
+
+        <section>
+<pre><code>
+var path = d3.geo.path().projection(projection);
+</code></pre>
+            <aside class="notes">Creates a new geographic path generator.</aside>
+        </section>
+
+        <section>
+<pre><code>
+vis.selectAll("path").data(json.features).enter().append("path")
+    .attr("d", path)
+    .style("fill", "#a6bddb")
+    .style("stroke-width", "0.3")
+    .style("stroke", "white")
+</code></pre>
+            <aside class="notes">The magic happens here - SVG path is created from the json.features (inside the feature collection) with the specified style.</aside>
+        </section>
+
+        <section>
+            <img src="img/davidson_county_d3.png" alt="davidson co d3.">
+            <aside class="notes">
+                Here's the GEOJSON drawn to an SVG with our specified style. Pretty simple.
+            </aside>
+        </section>
+
+        <section>
+            <h3>How about some<br/> choropleth?</h3>
+<pre><code>var color = d3.scale.quantize()
+    .range([
+    "rgb(254,229,217)",
+    "rgb(252,174,145)",
+    "rgb(251,106,74)",
+    "rgb(222,45,38)",
+    "rgb(165,15,21)"
+    ]).domain([0, 300]);
+</code></pre>
+            <aside class="notes">We can use the d3 quantize scale to create a nice color scale to use. I manually set the min and max for convenience.
+If you haven't noticed yet, d3 is pretty friggin' awesome.</aside>
+        </section>
+
+        <section>
+<pre><code>function choroplethColor(feature) {
+        return color(feature.properties.building_permits);
+    }
+</code></pre>
+            <aside class="notes">Next we create a simple func that accepts a feature and returns a color based on the number of building permits.</aside>
+        </section>
+
+        <section>
+<pre><code>vis.selectAll("path").data(json.features).enter().append("path")
+    .attr("d", path)
+    .style("fill", choroplethColor)
+    .style("stroke-width", "0.3")
+    .style("stroke", "white")
+</code></pre>
+            <aside class="notes">Last, we simply pass the function into the style.</aside>
+        </section>
+
+        <section>
+            <img src="img/davidson_county_permits_d3.png" alt="choro d3">
+            <aside class="notes">dawww yeah.</aside>
         </section>
 
       </div>
