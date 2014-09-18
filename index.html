@@ -314,7 +314,8 @@ tl_2013_47_bg.zip</pre>
             <h3>GeoJSON</h3>
             <pre><code>{
   "type": "FeatureCollection",
-  "features": {
+  "features": [
+    {
       "type": "Feature",
       "geometry": {
         "type": "Multipolygon",
@@ -323,13 +324,15 @@ tl_2013_47_bg.zip</pre>
       "properties": {
         "name": "Dinagat Islands"
       }
-    }
+    },
     ...
+    ]
 }
 </code></pre>
             <aside class="notes"><small>
                 This is more often what you'll see - a collection of features. Note the "coordinates"... this long list of numbers represents the blood, sweat and tears of generations of cartographers.
                 I still view it with awe. The properties array allows all manners of freedom, which we can demonstrate later.</small>
+                (8:30)
             </aside>
         </section>
 
@@ -489,7 +492,6 @@ $ ll
 -rwxrwxr-x  1 brian  staff    19K Aug  2  2013 tl_2013_47_bg.shp.xml
 -rwxrwxr-x  1 brian  staff    32K Aug  2  2013 tl_2013_47_bg.shx
 </code></pre>
-        <aside class="notes">Note the 32MB XML file.</aside>
         </section>
 
         <section>
@@ -632,14 +634,13 @@ bna.create_map(path='bna.html')
             <aside class="notes">
                 Woohoo! Now this just shows us what the block groups look like.
                 We still want to color them based on the number of permits.
+                That's called a "choropleth" map.
             </aside>
         </section>
 
         <section>
             <p>Need to find out number of permits per blockgroup.</p>
             <aside class="notes">
-                To do this, we need a way to figure out the point for each permit,
-                and calculate which blockgroup multipolygon it falls within.
                 Thankfully, the data has longitude/latitude appended to the address,
                 so we don't have to get into geocoding (that's a whole 'nother talk).
             </aside>
@@ -901,8 +902,11 @@ function getColor(d) {
         <section>
             <h3>The Pop-up</h3>
 <pre><code>function onEachFeature(feature, layer) {
-    if (feature.properties &amp;&amp; feature.properties.GEOID &amp;&amp; feature.properties.building_permits) {
-        layer.bindPopup(feature.properties.GEOID + " has " + feature.properties.building_permits + " building permits.");
+    if (feature.properties 
+        &amp;&amp; feature.properties.GEOID 
+        &amp;&amp; feature.properties.building_permits) {
+        layer.bindPopup(feature.properties.GEOID + " has "
+            + feature.properties.building_permits + " building permits.");
     }
 }</code></pre>
         </section>
