@@ -15,7 +15,7 @@ div.tooltip { border: 1px solid #ccc; font-family: sans-serif; font-size: 12px; 
   var vis = d3.select("#vis").append("svg")
       .attr("width", width).attr("height", height)
 
-  d3.json("data/building_permits_ogr2ogr_simple.geojson", function(json) {
+  d3.json("data/building_permits.geojson", function(json) {
       // cribbed from http://stackoverflow.com/questions/14492284/center-a-map-in-d3-given-a-geojson-object
       // create a first guess for the projection
       var center = d3.geo.centroid(json)
