@@ -1080,8 +1080,20 @@ Remember that earlier we mentioned simplifying geometries?
         </section>
 
         <section>
+            <h3>Many ways to simplify!</h3>
+            <ul>
+                <li>Douglas-Peucker</li>
+                <li>Visvalingam / effective area</li>
+                <li>Visvalingam / weighted area</li>
+            </ul>
+            <P>Three <a href="http://www.mapshaper.org/">mapshaper.org</a> to get you started.</p>
+            <aside class="notes">This online tool allows drag &amp; drop simplification of Geospatial data.</aside>
+        </section>
+
+        <section>
             <h3>ogr2ogr to the rescue!</h3>
             <h5>-simplify (tolerance)</h5>
+            <aside class="notes">But in our case, we are going to assume you don't know about any of these, you just want to make that file smaller.</aside>
         </section>
 
         <section>
@@ -1105,7 +1117,6 @@ Remember that earlier we mentioned simplifying geometries?
             <h1>2.2MB &gt; 303k!</h1>
             <aside class="notes">303k is still large, and there is more we could do to tune this, but it gives you an idea of the reduction.</aside>
         </section>
-
 
         <section>
             <h3>Wrapping Up</h3>
