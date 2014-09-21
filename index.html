@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="lib/css/zenburn.css">
     <style>
     .reveal a:not(.image) { color: lightblue; }
+    .reveal pre { box-shadow: none; }
         </style>
 
     <!-- If the query includes 'print-pdf', include the PDF print sheet -->
@@ -834,8 +835,7 @@ bna.create_map(path='bna.html')
 
         <section>
             <h3>A Simple Map</h3>
-<pre><code>
-&lt;!DOCTYPE html&gt;
+<pre>&lt;!DOCTYPE html&gt;
 &lt;head&gt;
    &lt;link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" /&gt;
    &lt;script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"&gt;&lt;/script&gt;
@@ -843,15 +843,14 @@ bna.create_map(path='bna.html')
 &lt;body&gt;
         &lt;div id="map" style="width: 960px; height: 500px"&gt;&lt;/div&gt;
 &lt;script&gt;
-var map = L.map('map').setView([37.8, -96], 4);
+<code>var map = L.map('map').setView([37.8, -96], 4);
 
 L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.jpg', {
     maxZoom: 18
-}).addTo(map);
-&lt;/script&gt;
+}).addTo(map);</code>&lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;
-</code></pre>
+</pre>
         </section>
         <section><img src="img/leaflet_simple_example.png" alt="simple example" /></section>
 
@@ -1064,6 +1063,7 @@ If you haven't noticed yet, d3 is pretty friggin' awesome.</aside>
         <section>
             <h3>Thanks!</h3>
             <p><a href="http://twitter.com/byeliad">@byeliad</a> / <a href="http://dailytechnology.net">dailytechnology.net</a></p>
+            <p><small>Special thanks to <a href="http://twitter.com/lroggendorff">Lance Roggendorff</a> for reviewing.</small></p>
         </section>
       </div>
 
