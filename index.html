@@ -54,12 +54,12 @@
           </p>
         </section>
 
-        <section>
-            <h2>What We Will and Will Not Talk About</h2>
-        </section>
 
         <section>
             <h3>What We'll Talk About</h3>
+        </section>
+
+        <section>
             <h4>Geospatial data formats.</h4>
             <aside class="notes">
                 This is important because if you're going to map data,
@@ -70,7 +70,6 @@
         </section>
 
         <section>
-            <h3>What We'll Talk About</h3>
             <p>Tools for transforming geospatial data.</p>
             <aside class="notes">
                 Most data formats are not suitable for presenting on the
@@ -80,7 +79,6 @@
         </section>
 
         <section>
-            <h3>What We'll Talk About</h3>
             <p>Libraries to quickly view data.</p>
             <aside class="notes">
                 When you're messing with geo data, it's really important
@@ -90,7 +88,6 @@
         </section>
 
         <section>
-            <h3>What We'll Talk About</h3>
             <p>Libraries to present data.</p>
             <aside class="notes">
                 Leaflet.js and d3 being the two giants here.
@@ -100,6 +97,9 @@
 
         <section>
             <h3>What We <u>Won't</u> Talk About</h3>
+        </section>
+
+        <section>
             <p>How tile servers work.</p>
             <aside class="notes">
                 This used to be something you had to talk about, but now
@@ -108,7 +108,6 @@
         </section>
 
         <section>
-            <h3>What We <u>Won't</u> Talk About</h3>
             <p>Geographic projections (see <a href="http://xkcd.com/977/">XKCD #977</a>)</p>
             <div>
             <img src="img/map_projections.png" alt="projections" />
@@ -1023,6 +1022,90 @@ If you haven't noticed yet, d3 is pretty friggin' awesome.</aside>
             <img src="img/davidson_county_permits_d3.png" alt="choro d3">
             <aside class="notes">dawww yeah.</aside>
         </section>
+
+        <section>
+            <h3>D3 mouseover events</h3>
+            <aside class="notes">d3 can easily add mouseover/mouseout events to the path of each
+            feature. you have to set the style with css.</aside>
+        </section>
+
+        <section>
+        <pre><code>.on("mouseover", function(feature) {
+    d3.select(this).transition().duration(300).style("opacity", 1);
+    div.transition().duration(300)
+    .style("opacity", 1)
+    div.text(feature.properties.building_permits + " building permits")
+    .style("left", (d3.event.pageX) + "px")
+    .style("top", (d3.event.pageY -30) + "px");
+})
+.on("mouseout", function() {
+    d3.select(this)
+    .transition().duration(300)
+    .style("opacity", 0.8);
+    div.transition().duration(300)
+    .style("opacity", 0);
+})
+</code></pre><aside class="notes">Simply setting opacity to 1 after mouse over, and positioning the hover div over the event.</aside></section> 
+
+        <section><pre><code>div.tooltip {
+border: 1px solid #ccc;
+font-family: sans-serif;
+font-size: 12px;
+color: #333; width: auto;
+padding: 10px;
+ position: absolute;
+ pointer-events: none;
+background-color: #fff;
+}</code></pre></section>
+
+        <section>
+            <img src="img/davidson_co_d3_hover.png" alt="tada" />
+        </section>
+
+        <section>
+            <h3>But wait, there's more!</h3>
+        </section>
+
+        <section>
+            <pre>$ ls -lc
+-rw-r--r--  1 brian  staff   2.2M Sep 20 20:44 building_permits.geojson</pre>
+        </section>
+
+        <section>
+            <h3>2.2MB?!</h3>
+            <img src="img/sad-trombone.jpg" alt="sad, sad trombone.">
+            <aside class="notes">That's pretty large, and it's certainly not something you want to eat up all your bandwidth serving.
+Remember that earlier we mentioned simplifying geometries?
+</aside>
+        </section>
+
+        <section>
+            <h3>ogr2ogr to the rescue!</h3>
+            <h5>-simplify (tolerance)</h5>
+        </section>
+
+        <section>
+            <h3>Don't get carried away!</h3>
+            <pre>ogr2ogr -f GeoJSON simplified.geojson -simplify 0.01 building_permits.geojson</pre>
+            <img src="img/davidson_co_d3_simplified_001.png" alt="simplified to 0.01" />
+        </section>
+
+        <section>
+            <pre>ogr2ogr -f GeoJSON simplified.geojson -simplify 0.001 building_permits.geojson</pre>
+            <img src="img/davidson_county_permits_d3.png" alt="choro d3">
+            <h5>Much better!</h5>
+        </section>
+
+        <section>
+<pre>$ ls -lc
+-rw-r--r--  1 brian  staff   303K Sep 20 20:43 building_permits.geojson</pre>
+        </section>
+
+        <section data-background="img/high-five.gif">
+            <h1>2.2MB &gt; 303k!</h1>
+            <aside class="notes">303k is still large, and there is more we could do to tune this, but it gives you an idea of the reduction.</aside>
+        </section>
+
 
         <section>
             <h3>Wrapping Up</h3>
